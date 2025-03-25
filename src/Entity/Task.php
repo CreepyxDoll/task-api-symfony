@@ -1,7 +1,7 @@
-<?php # tout modifié
-C:\Users\mirha\task-api
+<?php
 namespace App\Entity;
 
+// On importe les classes dont on aura besoin
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
@@ -13,6 +13,8 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+
+// Ici, on fait le pont entre Doctrine et la base de donnée, puis on expose grâce à l'API Platform
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
 #[ApiResource(
     operations: [
@@ -30,26 +32,33 @@ class Task
     #[ORM\Column]
     private ?int $id = null;
 
+    // On définit le champs Title, string, de 255 caractères, non null
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
     private ?string $title = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    // On définit le champs description, text, qui peut être null grâce à "nullable"
+    #[ORM\Column(type: Types::TEXT, nullable: true)] 
     private ?string $description = null;
 
+    // On définit le champs status, string, de 20 caractères, non null, avec 3 valeurs possibles dont "todo" par défaut
     #[ORM\Column(length: 20)]
     #[Assert\NotBlank]
     #[Assert\Choice(choices: ['todo', 'in_progress', 'done'])]
     private ?string $status = 'todo';
 
+    // On définit un attribut pour y assigner la date de création de la tâche
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
+    // Attribution automatique de la date actuelle
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
     }
 
+    // Pour la suite, les fonction get* permettent d'obtenir l'élément suivi
+    //                             set* permettent de définir l'élément suivi
     public function getId(): ?int
     {
         return $this->id;
