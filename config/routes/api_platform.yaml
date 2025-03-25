@@ -1,0 +1,6 @@
+# tout modifié
+api_platform:
+    resource: '../../src/Entity'
+    type: 'annotation'
+    #type: api_platform
+    prefix: /api
